@@ -193,7 +193,7 @@ def  call (Map configMap){
                 }
                 }
                 }
-            }
+            
             stage('Trivy Scan') {
                 steps {
                     script {
@@ -334,6 +334,7 @@ def  call (Map configMap){
         }
         
     }
+}
 
 
     
