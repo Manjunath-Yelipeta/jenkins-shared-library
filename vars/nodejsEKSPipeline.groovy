@@ -46,7 +46,7 @@ def  call (Map configMap){
             }
             }
 
-            /* // this command gives us coverage report and test cases report, sonarqube access this to check quality gate
+             // this command gives us coverage report and test cases report, sonarqube access this to check quality gate
             stage('Unit tests') {
                 steps {
                     script {
@@ -64,7 +64,7 @@ def  call (Map configMap){
                         }
                     } 
                 }
-            } */
+            } 
             /* stage('SonarQube Analysis') {
                 steps {
                     // 'My SonarQube Server' must match the name configured in Jenkins System Settings
