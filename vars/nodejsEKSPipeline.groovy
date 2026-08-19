@@ -107,6 +107,7 @@ def  call (Map configMap){
             }
             stage('Dependabot Scan') {
                 steps {
+                    script {
                     withCredentials([
                         string(
                             credentialsId: 'github-pat',
@@ -163,6 +164,7 @@ def  call (Map configMap){
                             utils.updateCommitStatus( 'failure', 'Dependabot scan failed',"library-scan")
                             throw e
                         }
+                        }
                     }
                 }
             }
@@ -171,6 +173,7 @@ def  call (Map configMap){
 
             stage('Docker Build ') {
                 steps {
+                    script {
                     // The plugin sets up the environment variables automatically
                     try {
                         withAWS(credentials: 'aws-id', region: 'us-east-1') {
@@ -187,6 +190,8 @@ def  call (Map configMap){
                         utils.updateCommitStatus( 'failure', 'Docker build failed',"build-image")
                         throw e
                     }
+                }
+                }
                 }
             }
             stage('Trivy Scan') {
@@ -237,6 +242,7 @@ def  call (Map configMap){
 
             stage('Docker Ecr Push') {
                 steps {
+                    script {
                     // The plugin sets up the environment variables automatically
                     try {
                         withAWS(credentials: 'aws-id', region: 'us-east-1') {
@@ -252,6 +258,7 @@ def  call (Map configMap){
                     catch (Exception e) {
                         utils.updateCommitStatus( 'failure', 'Docker Ecr Push failed',"push-image")
                         throw e
+                    }
                     }
                     
                 }
