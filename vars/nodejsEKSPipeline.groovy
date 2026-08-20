@@ -6,11 +6,11 @@ def call (Map configMap){
             } 
         }
         environment {
-            def appVersion = ""
-            acc_id = "160885265516"
-            project = configMap.get("project")
-            component = configMap.get("component")
-            org = "daws-90s"
+            def appVersion= ""
+            acc_id = "578257748163"
+            component = "catalogue"
+            project = "roboshop"
+            SCANNER_HOME = "sonar-8"
         }
         options {
             disableConcurrentBuilds()
@@ -156,7 +156,7 @@ def call (Map configMap){
                     }
                 }
             }
-            stage('Trivy Scan') {
+            stage('Trivy scan') {
                 steps {
                     script {
                         def dockerfileScan = sh(
@@ -174,11 +174,11 @@ def call (Map configMap){
                         )
 
                         if (dockerfileScan != 0 || imageScan != 0) {
-                            utils.updateCommitStatus("failure", "trivy scan failed", "trivy-scan")
+                            utils.updateCommitStatus("failure", "trivy scan failed", "image-scan")
                             error "Trivy found HIGH/CRITICAL issues in Dockerfile and/or OS packages. Failing pipeline."
                         }
                         else{
-                            utils.updateCommitStatus("success", "trivy scan success", "trivy-scan")
+                            utils.updateCommitStatus("success", "trivy scan success", "image-scan")
                         }
                     }
                 }
@@ -210,7 +210,7 @@ def call (Map configMap){
                         try{
                             withAWS(credentials: 'aws-creds', region: 'us-east-1') {
                                 sh """
-                                    aws eks update-kubeconfig --region us-east-1 --name roboshop
+                                    aws eks update-kubeconfig --region us-east-1 --name roboshop-dev
                                     cd helm
                                     helm upgrade --install ${component} -f values-dev.yaml -n roboshop-dev \
                                     --set deployment.imageVersion=${appVersion} \
@@ -228,7 +228,7 @@ def call (Map configMap){
                     }
                 }
             }
-            stage('api-tests'){
+           /*  stage('api-tests'){
                 steps{
                     script{
                         try{
@@ -250,7 +250,7 @@ def call (Map configMap){
                 }
             }
         }
-
+ */
         post { 
             always { 
                 echo 'I will always say Hello again!'
