@@ -7,6 +7,7 @@ def call (Map configMap){
         }
         environment {
             def appVersion= ""
+            org = 'Manjunath-Yelipeta'
             acc_id = "578257748163"
             component = "catalogue"
             project = "roboshop"
@@ -56,7 +57,8 @@ def call (Map configMap){
                             utils.updateCommitStatus("success", "unit tests are successful", "unit-tests")
                         }
                         catch(Exception e){
-                            utils.updateCommitStatus("failiure", "unit tests are failed", "unit-tests")
+                            utils.updateCommitStatus("failure", "unit tests are failed", "unit-tests")
+                            throw e
                         }
                     } 
                 }
@@ -251,7 +253,7 @@ def call (Map configMap){
             }
         }
  */
-        post { 
+        /* post { 
             always { 
                 echo 'I will always say Hello again!'
             }
@@ -265,7 +267,7 @@ def call (Map configMap){
                       color: 'danger',
                       message: "FAILED: Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) [ <${env.BUILD_URL}|View Build> ]"
             }
-        }
+        } */
     }
 }
 }
